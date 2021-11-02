@@ -1,5 +1,7 @@
 package hh.swd4.surveyplatform;
 
+import java.util.ArrayList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -9,7 +11,8 @@ import org.springframework.context.annotation.Bean;
 
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
-
+import hh.swd4.surveyplatform.domain.Survey;
+import hh.swd4.surveyplatform.domain.SurveyRepository;
 
 
 @SpringBootApplication
@@ -22,14 +25,16 @@ public class SurveyplatformApplication {
 	}
 
 	@Bean
-	public CommandLineRunner questionnaireDemo (QuestionRepository qrepository) {
+	public CommandLineRunner questionnaireDemo (SurveyRepository surveyRepository, QuestionRepository questionRepository) {
 		return (args) -> {
 			log.info("save a couple of students");
-			qrepository.save(new Question("Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei"));
-		
-			
-			
-
+			Survey uusKysely = new Survey("Testikysely");
+			Question uusKysymys = new Question(uusKysely, "Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei");
+			ArrayList<Question> kysymykset = new ArrayList<>();
+			kysymykset.add(uusKysymys);
+			uusKysely.setQuestions(kysymykset);
+			surveyRepository.save(uusKysely);
+			questionRepository.save(uusKysymys);	
 		};
 			
 		}

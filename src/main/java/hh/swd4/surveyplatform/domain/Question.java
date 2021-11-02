@@ -2,12 +2,22 @@ package hh.swd4.surveyplatform.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Question {
 
-private @Id @GeneratedValue Long q_id;
+private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
+
+@JsonIgnore
+@ManyToOne
+@JoinColumn(name="S_id")
+private Survey survey;
+
 private String question;
 private String opt1;
 private String opt2;
@@ -18,8 +28,9 @@ public Question() {
 	super();
 }
 
-public Question(String question, String opt1, String opt2, String opt3, String opt4) {
+public Question(Survey survey, String question, String opt1, String opt2, String opt3, String opt4) {
 	super();
+	this.survey = survey;
 	this.question = question;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
@@ -27,23 +38,26 @@ public Question(String question, String opt1, String opt2, String opt3, String o
 	this.opt4 = opt4;
 }
 
-public Question(String question, String opt1, String opt2, String opt3) {
+public Question(Survey survey, String question, String opt1, String opt2, String opt3) {
 	super();
+	this.survey = survey;
 	this.question = question;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
 	this.opt3 = opt3;
 }
 
-public Question(String question, String opt1, String opt2) {
+public Question(Survey survey, String question, String opt1, String opt2) {
 	super();
+	this.survey = survey;
 	this.question = question;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
 }
 
-public Question(String question, String opt1) {
+public Question(Survey survey, String question, String opt1) {
 	super();
+	this.survey = survey;
 	this.question = question;
 	this.opt1 = opt1;
 }
