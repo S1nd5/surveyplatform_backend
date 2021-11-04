@@ -34,7 +34,9 @@ public class SurveyplatformApplication {
 			kysymykset.add(uusKysymys);
 			uusKysely.setQuestions(kysymykset);
 			surveyRepository.save(uusKysely);
-			questionRepository.save(uusKysymys);	
+			questionRepository.save(uusKysymys);
+			System.out.println("Kysymykset");
+			System.out.println(uusKysely.getQuestions());
 		};
 			
 		}

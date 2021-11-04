@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Survey {
@@ -19,7 +20,7 @@ private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long s_id;
 private String name;
 
 @OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL)
-@JsonBackReference
+@JsonManagedReference
 private List<Question> questions = new ArrayList<>();
 
 public Survey() {
