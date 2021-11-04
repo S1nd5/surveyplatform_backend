@@ -26,6 +26,9 @@ private String name;
 @OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL)
 private List<Question> questions = new ArrayList<>();
 
+@OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL)
+private List<Answer> answers = new ArrayList<>();
+
 public Survey() {
 	super();
 }

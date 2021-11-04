@@ -15,19 +15,21 @@ import org.springframework.boot.jackson.JsonComponent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @JsonComponent
+@JsonDeserialize(as=Answer.class)
 public class Answer {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long a_id;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="q_id")
 	@JsonManagedReference("question")
 	private Question question;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id")
 	@JsonManagedReference("survey")
 	private Survey survey;

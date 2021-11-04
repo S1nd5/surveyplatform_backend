@@ -1,5 +1,8 @@
 package hh.swd4.surveyplatform.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,11 +20,13 @@ public class Question {
 
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
-@JsonIgnore
 @ManyToOne(cascade=CascadeType.ALL)
 @JoinColumn(name="s_id")
 @JsonBackReference("survey")
 private Survey survey;
+
+@OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL)
+private List<Answer> answers = new ArrayList<>();
 
 private String question;
 private String opt1;
