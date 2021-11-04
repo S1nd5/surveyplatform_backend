@@ -15,7 +15,7 @@ private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
 @JsonIgnore
 @ManyToOne
-@JoinColumn(name="S_id")
+@JoinColumn(name="s_id")
 private Survey survey;
 
 private String question;
