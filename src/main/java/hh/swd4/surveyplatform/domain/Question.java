@@ -1,11 +1,14 @@
 package hh.swd4.surveyplatform.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -14,8 +17,9 @@ public class Question {
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
 @JsonIgnore
-@ManyToOne
+@ManyToOne(cascade=CascadeType.ALL)
 @JoinColumn(name="s_id")
+@JsonBackReference("survey")
 private Survey survey;
 
 private String question;

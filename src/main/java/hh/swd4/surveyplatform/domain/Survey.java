@@ -11,16 +11,19 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
+@JsonDeserialize(as = Survey.class)
 public class Survey {
  
+@JsonProperty("s_id")
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long s_id;
 
 private String name;
 
 @OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL)
-@JsonManagedReference
 private List<Question> questions = new ArrayList<>();
 
 public Survey() {
@@ -67,15 +70,5 @@ public void setQuestions(List<Question> questions) {
 public String toString() {
 	return "Survey [s_id=" + s_id + ", name=" + name + "]";
 }
-
-
-
-
-
-
-
-
-
-
 
 }

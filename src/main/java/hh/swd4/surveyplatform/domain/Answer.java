@@ -1,20 +1,35 @@
 package hh.swd4.surveyplatform.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.springframework.boot.jackson.JsonComponent;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@JsonComponent
 public class Answer {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long a_id;
 	
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="q_id")
+	@JsonManagedReference("question")
 	private Question question;
 	
+	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id")
+	@JsonManagedReference("survey")
 	private Survey survey;
 	
 	private String answer1;
@@ -22,6 +37,7 @@ public class Answer {
 	private String answer3;
 	private String answer4;
 	
+	@JsonCreator
 	public Answer() {
 		super();
 	}
@@ -53,7 +69,7 @@ public class Answer {
 		this.answer2 = answer2;
 	}
 
-	public Answer(Question question, Survey survey, String answer1) {
+	public Answer(@JsonProperty("question") Question question,  @JsonProperty("survey") Survey survey,  @JsonProperty("answer1") String answer1) {
 		super();
 		this.question = question;
 		this.survey = survey;
@@ -121,11 +137,4 @@ public class Answer {
 		return "Answer [a_id=" + a_id + ", question=" + question + ", survey=" + survey + ", answer1=" + answer1
 				+ ", answer2=" + answer2 + ", answer3=" + answer3 + ", answer4=" + answer4 + "]";
 	}
-	
-	
-	
-	
-	
-
-	
 }

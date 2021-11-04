@@ -1,11 +1,7 @@
 package hh.swd4.surveyplatform.web;
-
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,41 +25,23 @@ import hh.swd4.surveyplatform.domain.SurveyRepository;
 import net.minidev.json.JSONObject;
 
 @RestController
-public class SurveyController {
-
-	private final SurveyRepository surveyRepository;
+public class QuestionController {
+	
 	private final QuestionRepository questionRepository;
 	private final AnswerRepository answerRepository;
 	
-	SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
-		this.surveyRepository = surveyRepository;
+	QuestionController(QuestionRepository questionRepository, AnswerRepository answerRepository) {
 		this.questionRepository = questionRepository;
 		this.answerRepository = answerRepository;
 	}
 	
-	@GetMapping("/surveys")
-	List<Survey> allSurveys() {
-		return surveyRepository.findAll();
+	@GetMapping(value="/question/{id}")
+	public @ResponseBody Optional<Question> findById(@PathVariable("id") Long questionId) {
+		return this.questionRepository.findById(questionId);
 	}
 	
-	@GetMapping(value="/survey/{id}")
-	public @ResponseBody Optional<Survey> findById(@PathVariable("id") Long surveyId) {
-		return this.surveyRepository.findById(surveyId);
+	@GetMapping("/questions")
+	List<Question> allQuestions() {
+		return questionRepository.findAll();
 	}
-	
-	@PostMapping(value="/answer", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Answer> insert(@RequestBody Answer answer) {
-
-	    /*if (answer != null) {
-	        answer.setSurvey(surveyRepository.findById(answer.getSurvey().getS_id()));
-	    }*/
-		answerRepository.save(answer);
-
-	    // TODO: call persistence layer to update
-	    return new ResponseEntity<Answer>(answer, HttpStatus.OK);
-	}
-	//Answer newAnswer(@RequestBody Answer newAnswer) throws JsonMappingException, JsonProcessingException {
-		//Survey SurveyEntity = surveyRepository.findById(newAnswer.getQuestion());
-		//return answerRepository.save(newAnswer);
-	
 }
