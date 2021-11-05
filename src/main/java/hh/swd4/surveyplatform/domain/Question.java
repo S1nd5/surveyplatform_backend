@@ -15,8 +15,12 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.springframework.hateoas.RepresentationModel;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-public class Question {
+public class Question extends RepresentationModel<Question> {
 
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
@@ -38,7 +42,8 @@ public Question() {
 	super();
 }
 
-public Question(Survey survey, String question, String opt1, String opt2, String opt3, String opt4) {
+@JsonCreator
+public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("opt4") String opt4) {
 	super();
 	this.survey = survey;
 	this.question = question;
@@ -48,7 +53,7 @@ public Question(Survey survey, String question, String opt1, String opt2, String
 	this.opt4 = opt4;
 }
 
-public Question(Survey survey, String question, String opt1, String opt2, String opt3) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question")  String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2")  String opt2, @JsonProperty("opt3") String opt3) {
 	super();
 	this.survey = survey;
 	this.question = question;
@@ -57,7 +62,7 @@ public Question(Survey survey, String question, String opt1, String opt2, String
 	this.opt3 = opt3;
 }
 
-public Question(Survey survey, String question, String opt1, String opt2) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2) {
 	super();
 	this.survey = survey;
 	this.question = question;
@@ -65,7 +70,7 @@ public Question(Survey survey, String question, String opt1, String opt2) {
 	this.opt2 = opt2;
 }
 
-public Question(Survey survey, String question, String opt1) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1) {
 	super();
 	this.survey = survey;
 	this.question = question;

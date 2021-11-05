@@ -28,15 +28,15 @@ public class SurveyplatformApplication {
 	public CommandLineRunner questionnaireDemo (SurveyRepository surveyRepository, QuestionRepository questionRepository) {
 		return (args) -> {
 			log.info("save a couple of students");
-			Survey uusKysely = new Survey("Testikysely");
-			Question uusKysymys = new Question(uusKysely, "Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei");
-			ArrayList<Question> kysymykset = new ArrayList<>();
-			kysymykset.add(uusKysymys);
-			uusKysely.setQuestions(kysymykset);
-			surveyRepository.save(uusKysely);
-			questionRepository.save(uusKysymys);
+			Survey newSurvey = new Survey("Testikysely");
+			Question newQuestion = new Question(newSurvey, "Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei", "Ehkä");
+			ArrayList<Question> questions = new ArrayList<>();
+			questions.add(newQuestion);
+			newSurvey.setQuestions(questions);
+			surveyRepository.save(newSurvey);
+			questionRepository.save(newQuestion);
 			System.out.println("Kysymykset");
-			System.out.println(uusKysely.getQuestions());
+			System.out.println(newSurvey.getQuestions());
 		};
 			
 		}

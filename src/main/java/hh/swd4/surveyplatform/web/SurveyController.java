@@ -30,41 +30,23 @@ import hh.swd4.surveyplatform.domain.SurveyRepository;
 import net.minidev.json.JSONObject;
 
 @RestController
+@RequestMapping(value = "/surveys", produces = "application/hal+json")
 public class SurveyController {
 
 	private final SurveyRepository surveyRepository;
-	private final QuestionRepository questionRepository;
-	private final AnswerRepository answerRepository;
+
 	
-	SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
+	SurveyController(SurveyRepository surveyRepository) {
 		this.surveyRepository = surveyRepository;
-		this.questionRepository = questionRepository;
-		this.answerRepository = answerRepository;
 	}
 	
-	@GetMapping("/surveys")
+	@GetMapping
 	List<Survey> allSurveys() {
 		return surveyRepository.findAll();
 	}
 	
-	@GetMapping(value="/survey/{id}")
+	@GetMapping(value="/{id}")
 	public @ResponseBody Optional<Survey> findById(@PathVariable("id") Long surveyId) {
 		return this.surveyRepository.findById(surveyId);
 	}
-	
-	@PostMapping(value="/answer", consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Answer> insert(@RequestBody Answer answer) {
-
-	    /*if (answer != null) {
-	        answer.setSurvey(surveyRepository.findById(answer.getSurvey().getS_id()));
-	    }*/
-		answerRepository.save(answer);
-
-	    // TODO: call persistence layer to update
-	    return new ResponseEntity<Answer>(answer, HttpStatus.OK);
-	}
-	//Answer newAnswer(@RequestBody Answer newAnswer) throws JsonMappingException, JsonProcessingException {
-		//Survey SurveyEntity = surveyRepository.findById(newAnswer.getQuestion());
-		//return answerRepository.save(newAnswer);
-	
 }

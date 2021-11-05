@@ -2,46 +2,48 @@ package hh.swd4.surveyplatform.web;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hh.swd4.surveyplatform.domain.Answer;
 import hh.swd4.surveyplatform.domain.AnswerRepository;
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
-import hh.swd4.surveyplatform.domain.Survey;
-import hh.swd4.surveyplatform.domain.SurveyRepository;
-import net.minidev.json.JSONObject;
 
 @RestController
+@RequestMapping(value = "/questions", produces = "application/hal+json")
 public class QuestionController {
 	
 	private final QuestionRepository questionRepository;
-	private final AnswerRepository answerRepository;
 	
 	QuestionController(QuestionRepository questionRepository, AnswerRepository answerRepository) {
 		this.questionRepository = questionRepository;
-		this.answerRepository = answerRepository;
 	}
 	
-	@GetMapping(value="/question/{id}")
-	public @ResponseBody Optional<Question> findById(@PathVariable("id") Long questionId) {
-		return this.questionRepository.findById(questionId);
-	}
-	
-	@GetMapping("/questions")
+	@GetMapping
 	List<Question> allQuestions() {
 		return questionRepository.findAll();
+	}
+	
+	@GetMapping(value="/{id}")
+	//ResponseEntity<Question
+	public @ResponseBody Optional<Question> findById(@PathVariable("id") Long questionId) {
+		/*Optional<Question> q = this.questionRepository.findById(questionId);
+		if ( q.isPresent()) {
+			Question responseQuestion = q.get();
+			responseQuestion.add(linkTo(methodOn(QuestionController.class).responseQuestion.getQ_id()).withSelfRel());
+			return new ResponseEntity<Question>(responseQuestion, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Question>(new Question(), HttpStatus.NOT_FOUND);
+		}*/
+		return this.questionRepository.findById(questionId);
 	}
 }
