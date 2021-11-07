@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/questions", produces = "application/hal+json")
 public class QuestionController {
 	

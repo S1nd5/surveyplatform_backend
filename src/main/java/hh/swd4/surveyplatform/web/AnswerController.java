@@ -14,6 +14,7 @@ import java.util.Optional;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,7 @@ import hh.swd4.surveyplatform.domain.SurveyRepository;
 import net.minidev.json.JSONObject;
 
 @RestController
+@CrossOrigin
 @RequestMapping(value = "/answers", produces = "application/hal+json")
 public class AnswerController {
 	private final AnswerRepository answerRepository;

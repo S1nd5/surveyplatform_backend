@@ -14,10 +14,9 @@ import hh.swd4.surveyplatform.domain.QuestionRepository;
 import hh.swd4.surveyplatform.domain.Survey;
 import hh.swd4.surveyplatform.domain.SurveyRepository;
 
-
 @SpringBootApplication
 public class SurveyplatformApplication {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(SurveyplatformApplication.class);
 
 	public static void main(String[] args) {
@@ -25,9 +24,10 @@ public class SurveyplatformApplication {
 	}
 
 	@Bean
-	public CommandLineRunner questionnaireDemo (SurveyRepository surveyRepository, QuestionRepository questionRepository) {
+	public CommandLineRunner questionnaireDemo(SurveyRepository surveyRepository,
+			QuestionRepository questionRepository) {
 		return (args) -> {
-			log.info("save a couple of students");
+
 			Survey newSurvey = new Survey("Testikysely");
 			Question newQuestion = new Question(newSurvey, "Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei", "Ehkä");
 			ArrayList<Question> questions = new ArrayList<>();
@@ -38,8 +38,6 @@ public class SurveyplatformApplication {
 			System.out.println("Kysymykset");
 			System.out.println(newSurvey.getQuestions());
 		};
-			
-		}
-	}
-	
 
+	}
+}
