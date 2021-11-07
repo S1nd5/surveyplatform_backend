@@ -2,10 +2,6 @@ package hh.swd4.surveyplatform.web;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import hh.swd4.surveyplatform.domain.Answer;
 import hh.swd4.surveyplatform.domain.AnswerRepository;
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
