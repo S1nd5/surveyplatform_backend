@@ -23,7 +23,7 @@ public class Question extends RepresentationModel<Question> {
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
 @ManyToOne(cascade=CascadeType.ALL)
-@JoinColumn(name="s_id", unique=true)
+@JoinColumn(name="s_id")
 @JsonBackReference("survey")
 private Survey survey;
 
