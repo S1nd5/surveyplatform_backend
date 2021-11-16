@@ -23,7 +23,7 @@ import hh.swd4.surveyplatform.domain.SurveyRepository;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/surveys", produces = "application/hal+json")
+@RequestMapping(value = "/surveys", produces = "application/json")
 public class SurveyController {
 
 	private final SurveyRepository surveyRepository;
@@ -50,21 +50,18 @@ public class SurveyController {
 			return new ResponseEntity<String>("Failed, invalid request body", HttpStatus.NOT_FOUND);
 		}
 		
-		surveyRepository.deleteById(s_id);
-		
+		surveyRepository.deleteById(s_id);		
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
-	
 	}
 	
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Survey> insert(@RequestBody Survey survey) throws JsonMappingException, JsonProcessingException {
 		if(survey.getName() == null) {
-			return new ResponseEntity<Survey>( HttpStatus.EXPECTATION_FAILED);
-		}else {
+			return new ResponseEntity<Survey>( HttpStatus.BAD_REQUEST);
+		} else {
 			surveyRepository.save(survey);
 			return new ResponseEntity<Survey>(survey, HttpStatus.OK);
+		}
 	}
-	}
-
 }

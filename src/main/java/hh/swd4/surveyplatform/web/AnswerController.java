@@ -9,7 +9,6 @@ import hh.swd4.surveyplatform.domain.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hh.swd4.surveyplatform.domain.AnswerRepository;
 import hh.swd4.surveyplatform.domain.Question;
@@ -36,8 +34,9 @@ import org.json.JSONObject;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/answers", produces = "application/hal+json")
+@RequestMapping(value = "/answers", produces = "application/json")
 public class AnswerController {
+	
 	private final AnswerRepository answerRepository;
 	private final SurveyRepository surveyRepository;
 	private final QuestionRepository questionRepository;
@@ -67,17 +66,17 @@ public class AnswerController {
 		
 		JSONObject obj = new JSONObject(json);
 		if ( obj.isNull("answers")) {
-			return new ResponseEntity<String>("Failed, please provide valid data", HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<String>("Failed, please provide valid data", HttpStatus.BAD_REQUEST);
 		}
 		
 		String respondentName = obj.getJSONObject("answers").getString("respondent");
 		if ( respondentName.isEmpty()) {
-			return new ResponseEntity<String>("Failed, please provide valid data (respondent name missing)", HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<String>("Failed, please provide valid data (respondent name missing)", HttpStatus.BAD_REQUEST);
 		}
 		
 		JSONArray arr = obj.getJSONObject("answers").getJSONArray("data");
 		if ( arr.isNull(0)) {
-			return new ResponseEntity<String>("Failed, please provide valid data array", HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<String>("Failed, please provide valid data array", HttpStatus.BAD_REQUEST);
 		}
 		
 		try {
@@ -118,7 +117,7 @@ public class AnswerController {
 			
 		} catch (Exception e ) {
 			
-			return new ResponseEntity<String>("Failed, exception: " + e, HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<String>("Failed, exception: " + e, HttpStatus.INTERNAL_SERVER_ERROR);
 			
 		}
 	}

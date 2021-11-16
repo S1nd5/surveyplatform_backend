@@ -23,7 +23,7 @@ import hh.swd4.surveyplatform.domain.QuestionRepository;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/questions", produces = "application/hal+json")
+@RequestMapping(value = "/questions", produces = "application/json")
 public class QuestionController {
 	
 	private final QuestionRepository questionRepository;
@@ -63,13 +63,11 @@ public class QuestionController {
 		
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
-	
-
 
 	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Question> insert(@RequestBody Question question) throws JsonMappingException, JsonProcessingException {
 		if(question.getQuestion() == null) {
-			return new ResponseEntity<Question>( HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<Question>( HttpStatus.BAD_REQUEST);
 		}else {
 			questionRepository.save(question);
 			return new ResponseEntity<Question>(question, HttpStatus.OK);
