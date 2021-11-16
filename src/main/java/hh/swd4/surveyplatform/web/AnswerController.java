@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import hh.swd4.surveyplatform.domain.Answer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -25,8 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hh.swd4.surveyplatform.domain.AnswerRepository;
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
+import hh.swd4.surveyplatform.domain.Respondent;
+import hh.swd4.surveyplatform.domain.RespondentRepository;
 import hh.swd4.surveyplatform.domain.Survey;
 import hh.swd4.surveyplatform.domain.SurveyRepository;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @RestController
 @CrossOrigin
@@ -35,11 +41,13 @@ public class AnswerController {
 	private final AnswerRepository answerRepository;
 	private final SurveyRepository surveyRepository;
 	private final QuestionRepository questionRepository;
+	private final RespondentRepository respondentRepository;
 	
-	AnswerController(AnswerRepository answerRepository, SurveyRepository surveyRepository, QuestionRepository questionRepository) {
+	AnswerController(AnswerRepository answerRepository, SurveyRepository surveyRepository, QuestionRepository questionRepository, RespondentRepository respondentRepository) {
 		this.answerRepository = answerRepository;
 		this.surveyRepository = surveyRepository;
 		this.questionRepository = questionRepository;
+		this.respondentRepository = respondentRepository;
 	}
 	
 	@GetMapping
@@ -53,54 +61,65 @@ public class AnswerController {
 	}
 	
 	@PostMapping(consumes = "application/json", produces = "application/json")
-	public ResponseEntity<String> insert(@RequestBody String answer) throws JsonMappingException, JsonProcessingException {
+	public ResponseEntity<String> insert(@RequestBody String json) throws JsonMappingException, JsonProcessingException {
 		
-		// Getting values from the JSON body
+		ArrayList<Answer> createdAnswers = new ArrayList<>();
+		
+		JSONObject obj = new JSONObject(json);
+		if ( obj.isNull("answers")) {
+			return new ResponseEntity<String>("Failed, please provide valid data", HttpStatus.EXPECTATION_FAILED);
+		}
+		
+		String respondentName = obj.getJSONObject("answers").getString("respondent");
+		if ( respondentName.isEmpty()) {
+			return new ResponseEntity<String>("Failed, please provide valid data (respondent name missing)", HttpStatus.EXPECTATION_FAILED);
+		}
+		
+		JSONArray arr = obj.getJSONObject("answers").getJSONArray("data");
+		if ( arr.isNull(0)) {
+			return new ResponseEntity<String>("Failed, please provide valid data array", HttpStatus.EXPECTATION_FAILED);
+		}
 		
 		try {
 			
-			ObjectMapper mapper = new ObjectMapper();
-			@SuppressWarnings("unchecked")
-			Map<String,Object> map = mapper.readValue(answer, Map.class);
+			String[] name = respondentName.split(" ");
+			Respondent respondent = new Respondent(name[0], name[1]);
+			respondentRepository.save(respondent);
 			
-			// Defining values from mapped JSON to Java variables
-			
-			Long surveyId = Long.valueOf((String) map.get("survey"));
-			Long questionId = Long.valueOf((String) map.get("question"));
-			
-			// Defining answers
-			String answer1 =  map.getOrDefault("answer1", "").toString();
-			String answer2 = map.getOrDefault("answer2", "").toString();
-			String answer3 = map.getOrDefault("answer3", "").toString();
-			String answer4 = map.getOrDefault("answer4", "").toString();
-			
-			// Get Entities By Id
-			
-			Optional<Survey> s = surveyRepository.findById(surveyId);
-			Optional<Question> q = questionRepository.findById(questionId);
-			
-			// Check that the entities are really there
-			
-			if ( s.isPresent() && q.isPresent() && answer1.length() > 1 ) {
-				Survey exSurvey = s.get();
-				Question exQuestion = q.get();
-				Answer a = new Answer();
-				a.setSurvey(exSurvey);
-				a.setQuestion(exQuestion);
-				a.setAnswer1(answer1);
-				a.setAnswer2(answer2);
-				a.setAnswer3(answer3);
-				a.setAnswer4(answer4);
-				answerRepository.save(a);
-			    return new ResponseEntity<String>(a.toString(), HttpStatus.OK);
-			    
-			} else {
-				return new ResponseEntity<String>("Failed, invalid request body", HttpStatus.EXPECTATION_FAILED);
+			for ( int i = 0; i < arr.length(); i++) {
 				
+				JSONObject answerObj = arr.getJSONObject(i);
+				
+				Long s_id = answerObj.getJSONObject("survey").getLong("s_id");
+				Long q_id = answerObj.getJSONObject("question").getLong("q_id");
+				
+				Optional<Survey> s = surveyRepository.findById(s_id);
+				Optional<Question> q = questionRepository.findById(q_id);
+				
+				if ( s.isPresent() && q.isPresent() ) {
+					
+					Survey thisSurvey = s.get();
+					Question thisQuestion = q.get();
+					
+					String answer1 = answerObj.getString("answer1");
+					String answer2 = answerObj.getString("answer2");
+					String answer3 = answerObj.getString("answer3");
+					String answer4 = answerObj.getString("answer4");
+					
+					Answer newAnswer = new Answer(thisQuestion, thisSurvey, respondent, answer1, answer2, answer3, answer4);
+					respondent.setSurvey(thisSurvey);
+					
+					answerRepository.save(newAnswer);
+					createdAnswers.add(newAnswer);
+				}
 			}
+			respondentRepository.save(respondent);
+			return new ResponseEntity<String>(createdAnswers.toString(), HttpStatus.OK);
+			
 		} catch (Exception e ) {
 			
-			return new ResponseEntity<String>("Failed, invalid request body", HttpStatus.EXPECTATION_FAILED);
+			return new ResponseEntity<String>("Failed, exception: " + e, HttpStatus.EXPECTATION_FAILED);
+			
 		}
 	}
 }
