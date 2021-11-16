@@ -3,7 +3,10 @@ package hh.swd4.surveyplatform.web;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,4 +37,18 @@ public class SurveyController {
 	public @ResponseBody Optional<Survey> findById(@PathVariable("id") Long surveyId) {
 		return this.surveyRepository.findById(surveyId);
 	}
+	
+	@DeleteMapping(value="/{id}")
+	public ResponseEntity<String> deleteById(@PathVariable("id") Long s_id) {
+		
+		if(!surveyRepository.existsById(s_id)) {
+			return new ResponseEntity<String>("Failed, invalid request body", HttpStatus.NOT_FOUND);
+		}
+		
+		surveyRepository.deleteById(s_id);
+		
+		return new ResponseEntity<String>("OK", HttpStatus.OK);
+	
+	}
+	
 }
