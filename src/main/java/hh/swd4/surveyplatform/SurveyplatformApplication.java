@@ -28,7 +28,7 @@ public class SurveyplatformApplication {
 			QuestionRepository questionRepository) {
 		return (args) -> {
 
-			Survey newSurvey = new Survey("Testikysely");
+			/*Survey newSurvey = new Survey("Testikysely");
 			Question newQuestion = new Question(newSurvey, "Osaako virtahevot uida?", "Kyllä", "Khyä", "Ei", "Ehkä");
 			ArrayList<Question> questions = new ArrayList<>();
 			questions.add(newQuestion);
@@ -37,6 +37,7 @@ public class SurveyplatformApplication {
 			questionRepository.save(newQuestion);
 			System.out.println("Kysymykset");
 			System.out.println(newSurvey.getQuestions());
+			*/
 		};
 
 	}

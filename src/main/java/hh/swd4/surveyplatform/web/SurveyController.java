@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import hh.swd4.surveyplatform.domain.Survey;
 import hh.swd4.surveyplatform.domain.SurveyRepository;
@@ -51,4 +56,15 @@ public class SurveyController {
 	
 	}
 	
+
+	@PostMapping(consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Survey> insert(@RequestBody Survey survey) throws JsonMappingException, JsonProcessingException {
+		if(survey.getName() == null) {
+			return new ResponseEntity<Survey>( HttpStatus.EXPECTATION_FAILED);
+		}else {
+			surveyRepository.save(survey);
+			return new ResponseEntity<Survey>(survey, HttpStatus.OK);
+	}
+	}
+
 }

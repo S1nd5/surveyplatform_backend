@@ -8,10 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import hh.swd4.surveyplatform.domain.AnswerRepository;
 import hh.swd4.surveyplatform.domain.Question;
@@ -60,5 +64,16 @@ public class QuestionController {
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 	
+
+
+	@PostMapping(consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Question> insert(@RequestBody Question question) throws JsonMappingException, JsonProcessingException {
+		if(question.getQuestion() == null) {
+			return new ResponseEntity<Question>( HttpStatus.EXPECTATION_FAILED);
+		}else {
+			questionRepository.save(question);
+			return new ResponseEntity<Question>(question, HttpStatus.OK);
+	}
+	}
 
 }
