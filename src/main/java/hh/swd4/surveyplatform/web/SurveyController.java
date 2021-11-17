@@ -38,7 +38,12 @@ public class SurveyController {
 	
 	@GetMapping
 	List<Survey> allSurveys() {
-		return surveyRepository.findAll();
+		List<Survey> surveys = this.surveyRepository.findAll();
+		for (Survey s : surveys) {
+			List<Question> questions = this.questionRepository.findAllBySurvey(s);
+			s.setQuestions(questions);
+		}
+		return surveys;
 	}
 	
 	@GetMapping(value="/{id}")
