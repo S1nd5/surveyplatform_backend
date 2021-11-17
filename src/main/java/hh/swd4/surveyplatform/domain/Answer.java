@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import org.springframework.boot.jackson.JsonComponent;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -19,24 +21,21 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @Entity
 @JsonComponent
 @JsonDeserialize(as=Answer.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "question"})
 public class Answer {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long a_id;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="q_id")
-	@JsonManagedReference("question")
 	private Question question;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id")
-	@JsonManagedReference("survey")
 	private Survey survey;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="r_id")
-	@JsonIgnore
 	private Respondent respondent;
 
 	private String answer1;

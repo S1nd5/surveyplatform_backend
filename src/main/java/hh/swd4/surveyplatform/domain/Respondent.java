@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.springframework.boot.jackson.JsonComponent;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
@@ -16,17 +18,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(as=Respondent.class)
 public class Respondent {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long r_id;
-	
-	/*@ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="a_id", unique=true)
-	@JsonBackReference("answer")
-	private Answer answer;*/
 
 	private String firstname;
 	private String lastname;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id", unique=false)
+	@JsonIgnore
 	private Survey survey;
 	
 	public Respondent() {}

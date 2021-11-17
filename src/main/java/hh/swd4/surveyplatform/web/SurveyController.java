@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import hh.swd4.surveyplatform.domain.Question;
+import hh.swd4.surveyplatform.domain.QuestionRepository;
 import hh.swd4.surveyplatform.domain.Survey;
 import hh.swd4.surveyplatform.domain.SurveyRepository;
 
@@ -27,10 +29,11 @@ import hh.swd4.surveyplatform.domain.SurveyRepository;
 public class SurveyController {
 
 	private final SurveyRepository surveyRepository;
-
+	private final QuestionRepository questionRepository;
 	
-	SurveyController(SurveyRepository surveyRepository) {
+	SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
 		this.surveyRepository = surveyRepository;
+		this.questionRepository = questionRepository;
 	}
 	
 	@GetMapping
@@ -39,8 +42,16 @@ public class SurveyController {
 	}
 	
 	@GetMapping(value="/{id}")
-	public @ResponseBody Optional<Survey> findById(@PathVariable("id") Long surveyId) {
-		return this.surveyRepository.findById(surveyId);
+	public @ResponseBody ResponseEntity<Survey> findById(@PathVariable("id") Long surveyId) {
+		Optional<Survey> thisSurvey = this.surveyRepository.findById(surveyId);
+		if ( thisSurvey.isPresent()) {
+			Survey survey = thisSurvey.get();
+			List<Question> questions = this.questionRepository.findAllBySurvey(survey);
+			survey.setQuestions(questions);;
+			return new ResponseEntity<Survey>(survey, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<Survey>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@DeleteMapping(value="/{id}")

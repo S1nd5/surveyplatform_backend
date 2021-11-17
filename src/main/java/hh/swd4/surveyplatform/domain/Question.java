@@ -5,20 +5,26 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.hateoas.RepresentationModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-public class Question extends RepresentationModel<Question> {
+public class Question {
 
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
@@ -28,7 +34,7 @@ private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 private Survey survey;
 
 @OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL)
-private List<Answer> answers = new ArrayList<>();
+private List<Answer> answers;
 
 private String question;
 private String opt1;
@@ -121,6 +127,14 @@ public void setOpt3(String opt3) {
 
 public void setOpt4(String opt4) {
 	this.opt4 = opt4;
+}
+
+public Survey getSurvey() {
+	return survey;
+}
+
+public void setSurvey(Survey survey) {
+	this.survey = survey;
 }
 
 @Override
