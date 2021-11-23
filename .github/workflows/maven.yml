@@ -23,5 +23,9 @@ jobs:
         distribution: 'adopt'
         cache: maven
     - name: Build with Maven
-      env : SERVER_PORT : ${{secrets.SERVER_PORT}}, SPRING_DATASOURCE_URL : ${{secrets.SPRING_DATASOURCE_URL}}, SPRING_DATASOURCE_USERNAME : ${{secrets.SPRING_DATASOURCE_USERNAME}}, SPRING_DATASOURCE_PASSWORD : ${{secrets.SPRING_DATASOURCE_PASSWORD}}
       run: mvn -B package --file pom.xml
+      env:
+        SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+        SPRING_DATASOURCE_USERNAME : ${{secrets.SPRING_DATASOURCE_USERNAME}}
+        SPRING_DATASOURCE_PASSWORD : ${{secrets.SPRING_DATASOURCE_PASSWORD}}
