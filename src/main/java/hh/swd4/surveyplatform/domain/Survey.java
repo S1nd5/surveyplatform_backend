@@ -33,13 +33,13 @@ private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long s_id;
 
 private String name;
 
-@OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL, orphanRemoval = false)
 private List<Question> questions;
 
-@OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL, orphanRemoval = false)
 private List<Answer> answers;
 
-@OneToMany(mappedBy = "r_id", cascade = CascadeType.ALL)
+@OneToMany(mappedBy = "r_id", cascade = CascadeType.ALL, orphanRemoval = false)
 private List<Respondent> respondents;
 
 public Survey() {
