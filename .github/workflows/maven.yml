@@ -13,15 +13,20 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env : 
+    SERVER_PORT : ${{secrets.SERVER_PORT}}
+    SPRING_DATASOURCE_URL : ${{secrets.SPRING_DATASOURCE_URL}}
+    SPRING_DATASOURCE_USERNAME : ${{secrets.SPRING_DATASOURCE_USERNAME}}
+    SPRING_DATASOURCE_PASSWORD : ${{secrets.SPRING_DATASOURCE_PASSWORD}}
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
-        env : 
-        SERVER_PORT : ${{secrets.SERVER_PORT}}
-        SPRING_DATASOURCE_URL : ${{secrets.SPRING_DATASOURCE_URL}}
-        SPRING_DATASOURCE_USERNAME : ${{secrets.SPRING_DATASOURCE_USERNAME}}
-        SPRING_DATASOURCE_PASSWORD : ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+    env : 
+    SERVER_PORT : ${{secrets.SERVER_PORT}}
+    SPRING_DATASOURCE_URL : ${{secrets.SPRING_DATASOURCE_URL}}
+    SPRING_DATASOURCE_USERNAME : ${{secrets.SPRING_DATASOURCE_USERNAME}}
+    SPRING_DATASOURCE_PASSWORD : ${{secrets.SPRING_DATASOURCE_PASSWORD}}
       uses: actions/setup-java@v2
       with:
         java-version: '11'
