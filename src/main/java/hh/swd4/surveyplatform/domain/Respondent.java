@@ -29,12 +29,17 @@ public class Respondent {
 	
 	public Respondent() {}
 	
+	public Respondent(Survey survey) {
+		super();
+		this.survey = survey;
+	}
+	
 	public Respondent(String firstname, String lastname) {
 		super();
 		this.firstname = firstname;
 		this.lastname = lastname;
 	}
-	
+
 	public Respondent(String firstname, String lastname, Survey survey) {
 		super();
 		this.firstname = firstname;
