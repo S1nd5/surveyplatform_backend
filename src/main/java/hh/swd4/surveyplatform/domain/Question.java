@@ -28,7 +28,7 @@ public class Question {
 
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
-@ManyToOne(cascade=CascadeType.ALL)
+@ManyToOne
 @JoinColumn(name="s_id")
 @JsonBackReference("survey")
 private Survey survey;
