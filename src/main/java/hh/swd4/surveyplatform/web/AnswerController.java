@@ -69,11 +69,6 @@ public class AnswerController {
 			return new ResponseEntity<String>("Failed, please provide valid data", HttpStatus.BAD_REQUEST);
 		}
 		
-		/*String respondentName = obj.getJSONObject("answers").getString("respondent");
-		if ( respondentName.isEmpty()) {
-			return new ResponseEntity<String>("Failed, please provide valid data (respondent name missing)", HttpStatus.BAD_REQUEST);
-		}*/
-		
 		JSONArray arr = obj.getJSONObject("answers").getJSONArray("data");
 		if ( arr.isNull(0)) {
 			return new ResponseEntity<String>("Failed, please provide valid data array", HttpStatus.BAD_REQUEST);
@@ -117,7 +112,6 @@ public class AnswerController {
 					Answer newAnswer = new Answer(thisQuestion, thisSurvey, respondent, answer1, answer2, answer3, answer4);
 					respondent.setSurvey(thisSurvey);
 					
-					respondentRepository.save(respondent);
 					answerRepository.save(newAnswer);
 					createdAnswers.add(newAnswer);
 				}
