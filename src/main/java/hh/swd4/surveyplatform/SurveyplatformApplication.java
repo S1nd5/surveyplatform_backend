@@ -30,16 +30,18 @@ public class SurveyplatformApplication {
 		return (args) -> {
 
 			/*Survey newSurvey = new Survey("Testikysely 1");
-			Question newQuestion = new Question(newSurvey, "Myöhästyikö Otso tänään junasta?", "Kyllä", "Mahollisesti", "Ei", "Ehkä");
-			Question newQuestion2 = new Question(newSurvey, "Mitä oli tänään ruokana koulussa?", "Seitaa", "Jauhelihamakaronia", "Kasvis vegepaska", "Keittolounas");
+			Question newQuestion = new Question(newSurvey, "Myöhästyikö Otso tänään junasta?", "Kyllä", "Mahollisesti", "Ei", "Ehkä", "radio");
+			Question newQuestion2 = new Question(newSurvey, "Mitä oli tänään ruokana koulussa?", "Seitaa", "Jauhelihamakaronia", "Kasvis vegepaska", "Keittolounas", "radio");
 			
 			Survey newSurvey2 = new Survey("Testikysely 2");
-			Question newQuestion3 = new Question(newSurvey2, "Pääseekö hissillä Haaga-Heliassa kerrokseen numero 0?", "Kyllä", "Ei", "Ehkä", "Kerrosta ei ole olemassa");
+			Question newQuestion3 = new Question(newSurvey2, "Pääseekö hissillä Haaga-Heliassa kerrokseen numero 0?", "Kyllä", "Ei", "Ehkä", "Kerrosta ei ole olemassa", "radio");
+			Question newQuestion4 = new Question(newSurvey2, "Syötä etu- ja sukunimesi","", "fullname");
 			ArrayList<Question> questions = new ArrayList<>();
 			ArrayList<Question> questions2 = new ArrayList<>();
 			questions.add(newQuestion);
 			questions.add(newQuestion2);
 			questions2.add(newQuestion3);
+			questions2.add(newQuestion4);
 			newSurvey.setQuestions(questions);
 			newSurvey2.setQuestions(questions2);
 			surveyRepository.save(newSurvey);
@@ -47,6 +49,7 @@ public class SurveyplatformApplication {
 			questionRepository.save(newQuestion);
 			questionRepository.save(newQuestion2);
 			questionRepository.save(newQuestion3);
+			questionRepository.save(newQuestion4);
 			
 			List<Question> qys = questionRepository.findAllBySurvey(newSurvey);
 			System.out.println(qys.toString());*/

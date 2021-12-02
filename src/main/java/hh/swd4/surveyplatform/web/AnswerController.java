@@ -69,11 +69,6 @@ public class AnswerController {
 			return new ResponseEntity<String>("Failed, please provide valid data", HttpStatus.BAD_REQUEST);
 		}
 		
-		String respondentName = obj.getJSONObject("answers").getString("respondent");
-		if ( respondentName.isEmpty()) {
-			return new ResponseEntity<String>("Failed, please provide valid data (respondent name missing)", HttpStatus.BAD_REQUEST);
-		}
-		
 		JSONArray arr = obj.getJSONObject("answers").getJSONArray("data");
 		if ( arr.isNull(0)) {
 			return new ResponseEntity<String>("Failed, please provide valid data array", HttpStatus.BAD_REQUEST);
@@ -81,8 +76,7 @@ public class AnswerController {
 		
 		try {
 			
-			String[] name = respondentName.split(" ");
-			Respondent respondent = new Respondent(name[0], name[1]);
+			Respondent respondent = new Respondent();
 			respondentRepository.save(respondent);
 			
 			for ( int i = 0; i < arr.length(); i++) {
@@ -99,6 +93,16 @@ public class AnswerController {
 					
 					Survey thisSurvey = s.get();
 					Question thisQuestion = q.get();
+					
+					/* Poikkeus: tsekkaa jos kysymystyyppi on nimi ja kerää tiedot talteen */
+					
+					if ( thisQuestion.getQ_type().equals("fullname")) {
+						if ( answerObj.getString("answer1").isEmpty() != true) {
+							String[] name = answerObj.getString("answer1").split(" ");
+							respondent.setFirstname(name[0]);
+							respondent.setLastname(name[1]);
+						}
+					}
 					
 					String answer1 = answerObj.getString("answer1");
 					String answer2 = answerObj.getString("answer2");

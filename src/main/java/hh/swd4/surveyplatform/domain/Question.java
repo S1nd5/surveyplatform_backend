@@ -1,27 +1,18 @@
 package hh.swd4.surveyplatform.domain;
 
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.springframework.hateoas.RepresentationModel;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Question {
@@ -37,6 +28,7 @@ private Survey survey;
 private List<Answer> answers;
 
 private String question;
+private String q_type;
 private String opt1;
 private String opt2;
 private String opt3;
@@ -47,38 +39,51 @@ public Question() {
 }
 
 @JsonCreator
-public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("opt4") String opt4) {
+public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("opt4") String opt4, @JsonProperty("q_type") String q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
+	this.q_type = q_type;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
 	this.opt3 = opt3;
 	this.opt4 = opt4;
 }
 
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question")  String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2")  String opt2, @JsonProperty("opt3") String opt3) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question")  String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2")  String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("q_type") String q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
+	this.q_type = q_type;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
 	this.opt3 = opt3;
 }
 
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("q_type") String q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
+	this.q_type = q_type;
 	this.opt1 = opt1;
 	this.opt2 = opt2;
 }
 
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1) {
+public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("q_type") String q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
+	this.q_type = q_type;
 	this.opt1 = opt1;
+}
+
+
+public String getQ_type() {
+	return q_type;
+}
+
+public void setQ_type(String q_type) {
+	this.q_type = q_type;
 }
 
 public Long getQ_id() {
