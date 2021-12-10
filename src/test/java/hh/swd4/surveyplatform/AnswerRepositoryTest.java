@@ -36,6 +36,8 @@ public class AnswerRepositoryTest {
 	@Test
 	public void createAnswerForQuestion() {
 		
+	QuestionType qt = new QuestionType("text");
+		
 		Survey newSurvey = new Survey("Testikysely 1");
 		Question newQuestion = new Question(newSurvey, "Myöhästyikö Otso tänään junasta?", "Kyllä", "Mahollisesti", "Ei", "Ehkä");
 		Question newQuestion2 = new Question(newSurvey, "Mitä oli tänään ruokana koulussa?", "Seitaa", "Jauhelihamakaronia", "Kasvis vegepaska", "Keittolounas");

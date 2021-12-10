@@ -29,54 +29,21 @@ private List<Answer> answers;
 
 private String question;
 private String q_type;
-private String opt1;
-private String opt2;
-private String opt3;
-private String opt4;
+@OneToMany(mappedBy = "o_id", cascade = CascadeType.ALL)
+private List<Option> options;
 
 public Question() {
 	super();
 }
 
 @JsonCreator
-public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("opt4") String opt4, @JsonProperty("q_type") String q_type) {
+public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("option") List<Option> opt, @JsonProperty("q_type") String q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
 	this.q_type = q_type;
-	this.opt1 = opt1;
-	this.opt2 = opt2;
-	this.opt3 = opt3;
-	this.opt4 = opt4;
+	this.options = opt;
 }
-
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question")  String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2")  String opt2, @JsonProperty("opt3") String opt3, @JsonProperty("q_type") String q_type) {
-	super();
-	this.survey = survey;
-	this.question = question;
-	this.q_type = q_type;
-	this.opt1 = opt1;
-	this.opt2 = opt2;
-	this.opt3 = opt3;
-}
-
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("opt2") String opt2, @JsonProperty("q_type") String q_type) {
-	super();
-	this.survey = survey;
-	this.question = question;
-	this.q_type = q_type;
-	this.opt1 = opt1;
-	this.opt2 = opt2;
-}
-
-public Question(@JsonProperty("survey") Survey survey,@JsonProperty("question") String question, @JsonProperty("opt1") String opt1, @JsonProperty("q_type") String q_type) {
-	super();
-	this.survey = survey;
-	this.question = question;
-	this.q_type = q_type;
-	this.opt1 = opt1;
-}
-
 
 public String getQ_type() {
 	return q_type;
@@ -94,20 +61,8 @@ public String getQuestion() {
 	return question;
 }
 
-public String getOpt1() {
-	return opt1;
-}
-
-public String getOpt2() {
-	return opt2;
-}
-
-public String getOpt3() {
-	return opt3;
-}
-
-public String getOpt4() {
-	return opt4;
+public List<Option> getOpt() {
+	return options;
 }
 
 public void setQ_id(Long q_id) {
@@ -118,20 +73,8 @@ public void setQuestion(String question) {
 	this.question = question;
 }
 
-public void setOpt1(String opt1) {
-	this.opt1 = opt1;
-}
-
-public void setOpt2(String opt2) {
-	this.opt2 = opt2;
-}
-
-public void setOpt3(String opt3) {
-	this.opt3 = opt3;
-}
-
-public void setOpt4(String opt4) {
-	this.opt4 = opt4;
+public void setOpt(List<Option> opt) {
+	this.options = opt;
 }
 
 public Survey getSurvey() {
@@ -144,13 +87,7 @@ public void setSurvey(Survey survey) {
 
 @Override
 public String toString() {
-	return "Question [q_id=" + q_id + ", question=" + question + ", opt1=" + opt1 + ", opt2=" + opt2 + ", opt3=" + opt3
-			+ ", opt4=" + opt4 + "]";
+	return "Question [q_id=" + q_id + ", survey=" + survey + ", answers=" + answers + ", question=" + question
+			+ ", q_type=" + q_type + ", options=" + options + "]";
 }
-
-
-
-
-
-
 }
