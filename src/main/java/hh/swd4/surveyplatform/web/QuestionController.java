@@ -18,6 +18,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 import hh.swd4.surveyplatform.domain.AnswerRepository;
+import hh.swd4.surveyplatform.domain.Option;
+import hh.swd4.surveyplatform.domain.OptionRepository;
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
 
@@ -27,40 +29,42 @@ import hh.swd4.surveyplatform.domain.QuestionRepository;
 public class QuestionController {
 	
 	private final QuestionRepository questionRepository;
+	private final OptionRepository optionRepository;
 	
-	QuestionController(QuestionRepository questionRepository, AnswerRepository answerRepository) {
+	QuestionController(QuestionRepository questionRepository, OptionRepository optionRepository, AnswerRepository answerRepository) {
 		this.questionRepository = questionRepository;
+		this.optionRepository = optionRepository;
 	}
 	
 	@GetMapping
 	List<Question> allQuestions() {
-		return questionRepository.findAll();
+		List<Question> questions = this.questionRepository.findAll();
+		for (Question q : questions) {
+			List<Option> options = this.optionRepository.findAllByQuestion(q);
+			q.setOptions(options);
+		}
+		return questions;
 	}
 	
 	@GetMapping(value="/{id}")
-	//ResponseEntity<Question
-	public @ResponseBody Optional<Question> findById(@PathVariable("id") Long questionId) {
-		/*Optional<Question> q = this.questionRepository.findById(questionId);
-		if ( q.isPresent()) {
-			Question responseQuestion = q.get();
-			responseQuestion.add(linkTo(methodOn(QuestionController.class).responseQuestion.getQ_id()).withSelfRel());
-			return new ResponseEntity<Question>(responseQuestion, HttpStatus.OK);
+	public @ResponseBody ResponseEntity<Question> findById(@PathVariable("id") Long questionId) {
+		Optional<Question> thisQuestion = this.questionRepository.findById(questionId);
+		if ( thisQuestion.isPresent()) {
+			Question question = thisQuestion.get();
+			List<Option> options = this.optionRepository.findAllByQuestion(question);
+			question.setOptions(options);
+			return new ResponseEntity<Question>(question, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<Question>(new Question(), HttpStatus.NOT_FOUND);
-		}*/
-		return this.questionRepository.findById(questionId);
+			return new ResponseEntity<Question>(HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@DeleteMapping(value="/{id}")
-	
 	public ResponseEntity<String> deleteById(@PathVariable("id") Long q_id) {
-		
 		if(!questionRepository.existsById(q_id)) {
 			return new ResponseEntity<String>("Failed, invalid request body", HttpStatus.NOT_FOUND);
 		}
-		
 		questionRepository.deleteById(q_id);
-		
 		return new ResponseEntity<String>("OK", HttpStatus.OK);
 	}
 
@@ -68,10 +72,10 @@ public class QuestionController {
 	public ResponseEntity<Question> insert(@RequestBody Question question) throws JsonMappingException, JsonProcessingException {
 		if(question.getQuestion() == null) {
 			return new ResponseEntity<Question>( HttpStatus.BAD_REQUEST);
-		}else {
+		} else {
 			questionRepository.save(question);
 			return new ResponseEntity<Question>(question, HttpStatus.OK);
-	}
+		}
 	}
 
 }

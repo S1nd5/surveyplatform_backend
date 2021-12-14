@@ -8,27 +8,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonDeserialize(as = Survey.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "answers", "respondents"})
+@JsonIdentityInfo(
+		   generator = ObjectIdGenerators.PropertyGenerator.class,
+		   property = "s_id")
 public class Survey {
- 
-@JsonProperty("s_id")
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long s_id;
 
 private String name;
+private boolean active;
 
-@OneToMany(mappedBy = "q_id", cascade = CascadeType.ALL, orphanRemoval = false)
+@OneToMany(mappedBy = "q_id", orphanRemoval = false)
+@JsonManagedReference
 private List<Question> questions;
 
 @OneToMany(mappedBy = "a_id", cascade = CascadeType.ALL, orphanRemoval = false)
+@JsonIgnore
 private List<Answer> answers;
 
 @OneToMany(mappedBy = "r_id", cascade = CascadeType.ALL, orphanRemoval = false)
+@JsonIgnore
 private List<Respondent> respondents;
 
 public Survey() {
@@ -39,12 +44,21 @@ public Survey(String name) {
 	super();
 	this.name = name;
 	this.questions = new ArrayList<>();
+	this.active = true;
 }
 
 public Survey(String name, List<Question> questions) {
 	super();
 	this.name = name;
 	this.questions = questions;
+	this.active = true;
+}
+
+public Survey(String name, List<Question> questions, Boolean active) {
+	super();
+	this.name = name;
+	this.questions = questions;
+	this.active = active;
 }
 
 public Long getS_id() {
@@ -85,6 +99,14 @@ public List<Respondent> getRespondents() {
 
 public void setRespondents(List<Respondent> respondents) {
 	this.respondents = respondents;
+}
+
+public boolean isActive() {
+	return active;
+}
+
+public void setActive(boolean active) {
+	this.active = active;
 }
 
 @Override

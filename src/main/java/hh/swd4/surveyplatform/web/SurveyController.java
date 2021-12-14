@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import hh.swd4.surveyplatform.domain.Option;
+import hh.swd4.surveyplatform.domain.OptionRepository;
 import hh.swd4.surveyplatform.domain.Question;
 import hh.swd4.surveyplatform.domain.QuestionRepository;
 import hh.swd4.surveyplatform.domain.Survey;
@@ -30,10 +32,12 @@ public class SurveyController {
 
 	private final SurveyRepository surveyRepository;
 	private final QuestionRepository questionRepository;
+	private final OptionRepository optionRepository;
 	
-	SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository) {
+	SurveyController(SurveyRepository surveyRepository, QuestionRepository questionRepository, OptionRepository optionRepository) {
 		this.surveyRepository = surveyRepository;
 		this.questionRepository = questionRepository;
+		this.optionRepository = optionRepository;
 	}
 	
 	@GetMapping
@@ -41,6 +45,11 @@ public class SurveyController {
 		List<Survey> surveys = this.surveyRepository.findAll();
 		for (Survey s : surveys) {
 			List<Question> questions = this.questionRepository.findAllBySurvey(s);
+			//Options
+			for (Question q : questions) {
+				List<Option> options = this.optionRepository.findAllByQuestion(q);
+				q.setOptions(options);
+			}
 			s.setQuestions(questions);
 		}
 		return surveys;
@@ -52,7 +61,12 @@ public class SurveyController {
 		if ( thisSurvey.isPresent()) {
 			Survey survey = thisSurvey.get();
 			List<Question> questions = this.questionRepository.findAllBySurvey(survey);
-			survey.setQuestions(questions);;
+			//Options
+			for (Question q : questions) {
+				List<Option> options = this.optionRepository.findAllByQuestion(q);
+				q.setOptions(options);
+			}
+			survey.setQuestions(questions);
 			return new ResponseEntity<Survey>(survey, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Survey>(HttpStatus.NOT_FOUND);

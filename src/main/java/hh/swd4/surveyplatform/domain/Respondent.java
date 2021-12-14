@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.springframework.boot.jackson.JsonComponent;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonComponent
-@JsonDeserialize(as=Respondent.class)
+@JsonIdentityInfo(
+		   generator = ObjectIdGenerators.PropertyGenerator.class,
+		   property = "r_id")
 public class Respondent {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long r_id;
 
@@ -24,7 +24,7 @@ public class Respondent {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id", unique=false)
-	@JsonIgnore
+	@JsonManagedReference
 	private Survey survey;
 	
 	public Respondent() {}
