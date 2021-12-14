@@ -12,24 +12,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.boot.jackson.JsonComponent;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
-@JsonIdentityInfo(
-		   generator = ObjectIdGenerators.PropertyGenerator.class,
-		   property = "q_id")
+@JsonDeserialize(as = Question.class)
+@JsonComponent
 public class Question {
 
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long q_id;
 
 @ManyToOne
 @JoinColumn(name="s_id")
-@JsonIgnore
+@JsonBackReference
 private Survey survey;
 
 @OneToMany(fetch = FetchType.EAGER, mappedBy = "a_id", cascade = CascadeType.ALL)
@@ -47,11 +50,12 @@ private QuestionType q_type;
 @JsonManagedReference
 private List<Option> options;
 
+@JsonCreator
 public Question() {
 	super();
 }
 
-public Question(Survey survey, String question, QuestionType q_type) {
+public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("q_type") QuestionType q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;
@@ -60,7 +64,7 @@ public Question(Survey survey, String question, QuestionType q_type) {
 }
 
 @JsonCreator
-public Question(Survey survey, String question, List<Option> opt, QuestionType q_type) {
+public Question(@JsonProperty("survey") Survey survey, @JsonProperty("question") String question, @JsonProperty("opt") List<Option> opt, @JsonProperty("q_type") QuestionType q_type) {
 	super();
 	this.survey = survey;
 	this.question = question;

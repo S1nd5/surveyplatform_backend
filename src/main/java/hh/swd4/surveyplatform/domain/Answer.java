@@ -14,9 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(
-		   generator = ObjectIdGenerators.PropertyGenerator.class,
-		   property = "a_id")
 public class Answer {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO) private Long a_id;
