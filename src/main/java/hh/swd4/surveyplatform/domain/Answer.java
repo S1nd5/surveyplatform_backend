@@ -7,54 +7,62 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import org.springframework.boot.jackson.JsonComponent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonComponent
-@JsonDeserialize(as=Answer.class)
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "question"})
+@JsonIdentityInfo(
+		   generator = ObjectIdGenerators.PropertyGenerator.class,
+		   property = "a_id")
 public class Answer {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long a_id;
+	@Id @GeneratedValue(strategy = GenerationType.AUTO) private Long a_id;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="q_id")
+	@JsonManagedReference
 	private Question question;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id")
+	@JsonManagedReference
 	private Survey survey;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="r_id")
+	@JsonManagedReference
 	private Respondent respondent;
 
 	private String answer1;
 	private String answer2;
 	private String answer3;
 	private String answer4;
+	private String answer5;
 	
-	@JsonCreator
 	public Answer() {
 		super();
 	}
 	
-	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2,
-			String answer3, String answer4) {
+	public Answer(@JsonProperty("question") Question question,  @JsonProperty("survey") Survey survey, @JsonProperty("respondent") Respondent respondent,  @JsonProperty("answer1") String answer1) {
+		super();
+		this.question = question;
+		this.survey = survey;
+		this.respondent = respondent;
+		this.answer1 = answer1;
+	}
+	
+	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2) {
 		super();
 		this.question = question;
 		this.survey = survey;
 		this.respondent = respondent;
 		this.answer1 = answer1;
 		this.answer2 = answer2;
-		this.answer3 = answer3;
-		this.answer4 = answer4;
 	}
-
+	
 	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2, String answer3) {
 		super();
 		this.question = question;
@@ -64,22 +72,29 @@ public class Answer {
 		this.answer2 = answer2;
 		this.answer3 = answer3;
 	}
-
-	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2) {
+	
+	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2, String answer3, String answer4) {
 		super();
 		this.question = question;
 		this.survey = survey;
 		this.respondent = respondent;
 		this.answer1 = answer1;
 		this.answer2 = answer2;
+		this.answer3 = answer3;
+		this.answer4 = answer4;
 	}
-
-	public Answer(@JsonProperty("question") Question question,  @JsonProperty("survey") Survey survey, @JsonProperty("respondent") Respondent respondent,  @JsonProperty("answer1") String answer1) {
+	
+	public Answer(Question question, Survey survey, Respondent respondent, String answer1, String answer2,
+			String answer3, String answer4, String answer5) {
 		super();
 		this.question = question;
 		this.survey = survey;
 		this.respondent = respondent;
 		this.answer1 = answer1;
+		this.answer2 = answer2;
+		this.answer3 = answer3;
+		this.answer4 = answer4;
+		this.answer5 = answer5;
 	}
 
 	public Respondent getRespondent() {
@@ -116,6 +131,14 @@ public class Answer {
 
 	public String getAnswer4() {
 		return answer4;
+	}
+	
+	public String getAnswer5() {
+		return answer5;
+	}
+
+	public void setAnswer5(String answer5) {
+		this.answer5 = answer5;
 	}
 
 	public void setA_id(Long a_id) {

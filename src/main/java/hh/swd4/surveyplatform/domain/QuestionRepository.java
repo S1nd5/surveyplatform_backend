@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.data.repository.CrudRepository;
 
 public interface QuestionRepository extends CrudRepository <Question, Long> {
+	
 	Optional<Question> findById(Long id);
+	
 	List<Question> findAllBySurvey(Survey survey);
+	
 	List<Question> findAll();
 }

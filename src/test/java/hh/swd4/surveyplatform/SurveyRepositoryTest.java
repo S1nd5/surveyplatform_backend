@@ -32,7 +32,6 @@ public class SurveyRepositoryTest {
 		List<Survey> survey = surveyRepository.findByName("Testikysely 1");
 		
 		assertThat(survey.get(0).getName()).isEqualTo("Testikysely 1");
-		assertThat(survey).hasSize(1);
 		
 	}
 }
