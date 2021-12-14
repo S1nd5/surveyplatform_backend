@@ -35,7 +35,7 @@ public class SurveyplatformApplication {
 
 			// New Survey and Question Type
 			
-			Survey newSurvey = new Survey("Testikysely 1");
+			/*Survey newSurvey = new Survey("Testikysely 1");
 			QuestionType qt = new QuestionType("radio");
 			QuestionType fullnameQuestion = new QuestionType("fullname");
 			
@@ -105,7 +105,7 @@ public class SurveyplatformApplication {
 			newSurvey2.setQuestions(questions2);
 			
 			List<Question> qys = questionRepository.findAllBySurvey(newSurvey);
-			System.out.println(qys.toString());
+			System.out.println(qys.toString());*/
 		};
 
 	}

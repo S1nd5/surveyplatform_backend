@@ -9,16 +9,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.springframework.boot.jackson.JsonComponent;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
-@JsonIdentityInfo(
-		   generator = ObjectIdGenerators.PropertyGenerator.class,
-		   property = "s_id")
+@JsonDeserialize(as = Survey.class)
+@JsonComponent
+@JsonIgnoreProperties({"hibernateLazyInitializer", "answers", "respondents"})
 public class Survey {
+@JsonProperty("s_id")
 private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long s_id;
 
 private String name;
@@ -36,29 +44,17 @@ private List<Answer> answers;
 @JsonIgnore
 private List<Respondent> respondents;
 
+@JsonCreator
 public Survey() {
 	super();
 }
 
-public Survey(String name) {
+@JsonCreator
+public Survey(@JsonProperty("name") String name) {
 	super();
 	this.name = name;
 	this.questions = new ArrayList<>();
 	this.active = true;
-}
-
-public Survey(String name, List<Question> questions) {
-	super();
-	this.name = name;
-	this.questions = questions;
-	this.active = true;
-}
-
-public Survey(String name, List<Question> questions, Boolean active) {
-	super();
-	this.name = name;
-	this.questions = questions;
-	this.active = active;
 }
 
 public Long getS_id() {

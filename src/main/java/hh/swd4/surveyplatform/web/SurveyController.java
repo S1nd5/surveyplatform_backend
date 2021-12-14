@@ -73,6 +73,16 @@ public class SurveyController {
 		}
 	}
 	
+	@PostMapping(value="/{id}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Survey> update(@RequestBody Survey survey) throws JsonMappingException, JsonProcessingException {
+		if(survey == null) {
+			return new ResponseEntity<Survey>( HttpStatus.BAD_REQUEST);
+		} else {
+			surveyRepository.save(survey);
+			return new ResponseEntity<Survey>(survey, HttpStatus.OK);
+		}
+	}
+	
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<String> deleteById(@PathVariable("id") Long s_id) {
 		

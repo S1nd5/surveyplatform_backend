@@ -8,14 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
-@JsonIdentityInfo(
-		   generator = ObjectIdGenerators.PropertyGenerator.class,
-		   property = "r_id")
 public class Respondent {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long r_id;
 
@@ -24,7 +22,7 @@ public class Respondent {
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="s_id", unique=false)
-	@JsonManagedReference
+	@JsonBackReference
 	private Survey survey;
 	
 	public Respondent() {}
